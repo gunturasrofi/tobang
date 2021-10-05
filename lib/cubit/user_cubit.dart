@@ -20,8 +20,21 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  // Future<void> signUp(User user, String password) async {
-  //   ApiReturnValue<User> result = await UserServices.signUp(user, password);
+  Future<void> signUp(String firstname, String lastname, String email,
+      String hp, String password) async {
+    ApiReturnValue result =
+        await UserServices.signUp(firstname, lastname, email, hp, password);
+
+    if (result.value != null) {
+      emit(UserSignUp(result.value!));
+    } else {
+      emit(UserSignUp(result.message!));
+    }
+  }
+  // Future<void> signUp(String firstname, String lastname, String email,
+  //     String hp, String password) async {
+  //   ApiReturnValue<User> result =
+  //       await UserServices.signUp(firstname, lastname, email, hp, password);
 
   //   if (result.value != null) {
   //     emit(UserLoaded(result.value!));

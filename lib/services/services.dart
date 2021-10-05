@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'package:tobag/models/models.dart';
 import 'package:http/http.dart' as http;
-
 part 'user_services.dart';
 
 String baseUrl = 'http://202.157.184.201:8000/';

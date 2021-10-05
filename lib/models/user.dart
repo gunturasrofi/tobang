@@ -2,58 +2,46 @@ part of 'models.dart';
 
 class User extends Equatable {
   final int id;
-  final String name;
+  final String firstname;
+  final String lastname;
   final String email;
-  final String address;
-  final String houseNumber;
-  final String phoneNumber;
-  final String city;
-  final String picturePath;
+  final String hp;
+  final String group;
   static String? token;
 
   User({
     required this.id,
-    required this.name,
+    required this.firstname,
+    required this.lastname,
     required this.email,
-    required this.address,
-    required this.houseNumber,
-    required this.phoneNumber,
-    required this.city,
-    required this.picturePath,
+    required this.hp,
+    required this.group,
   });
 
   factory User.formJson(Map<String, dynamic> data) => User(
-        id: data['id'],
-        name: data['name'],
-        email: data['email'],
-        address: data['address'],
-        houseNumber: data['houseNumber'],
-        phoneNumber: data['phoneNumber'],
-        city: data['city'],
-        picturePath: data['profile_photo_url'],
-      );
+      id: data['id'],
+      firstname: data['firstname'],
+      lastname: data['lastname'],
+      email: data['email'],
+      hp: data['hp'],
+      group: data['group']);
 
   User copyWith({
     int? id,
-    String? name,
+    String? firstname,
+    String? lastname,
     String? email,
-    String? address,
-    String? houseNumber,
-    String? phoneNumber,
-    String? city,
-    String? picturePath,
+    String? hp,
+    String? group,
   }) =>
       User(
           id: id ?? this.id,
-          name: name ?? this.name,
+          firstname: firstname ?? this.firstname,
+          lastname: lastname ?? this.lastname,
           email: email ?? this.email,
-          address: address ?? this.address,
-          houseNumber: houseNumber ?? this.houseNumber,
-          phoneNumber: phoneNumber ?? this.phoneNumber,
-          city: city ?? this.city,
-          picturePath: picturePath ?? this.picturePath);
+          hp: hp ?? this.hp,
+          group: group ?? this.group);
 
   @override
-  List<Object> get props =>
-      [id, name, email, address, houseNumber, phoneNumber, city, picturePath];
+  List<Object> get props => [id, firstname, lastname, email, hp, group];
 }

@@ -19,12 +19,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => UserCubit(),
-        ),
-      ],
+    return BlocProvider(
+      create: (_) => UserCubit(),
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

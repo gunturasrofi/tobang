@@ -7,121 +7,79 @@ class UserServices {
     if (client == null) {
       client = http.Client();
     }
-    String url = baseUrl + 'login';
-    var response = await client.post(
+
+    var url = Uri.parse(baseUrl + 'login');
+    var response = await http.post(url, headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }, body: {
+      'username': email,
+      'password': password,
+    });
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(
+        message: 'please try again',
+      );
+    } else {
+      var data = jsonDecode(response.body);
+
+      User.token = data['access_token'];
+      User value = User.formJson(data['data']);
+
+      return ApiReturnValue(value: value);
+    }
+
+    //return ApiReturnValue(message: "Wrong Email or Password");
+  }
+
+  static Future<ApiReturnValue<User>> signUp(String firstname, String lastname,
+      String email, String hp, String password,
+      {http.Client? client}) async {
+    if (client == null) {
+      client = http.Client();
+    }
+
+    var url = Uri.parse(baseUrl + 'users');
+    var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(
         <String, String>{
+          'firstname': firstname,
+          'lastname': lastname,
           'email': email,
           'password': password,
+          'hp': hp,
+          'grup': 'member'
         },
       ),
     );
 
     if (response.statusCode != 200) {
       return ApiReturnValue(
-        message: 'please try again',
+        message: 'Please try again',
       );
+    } else {
+      var datax = jsonDecode(response.body);
+
+      // User.token = data['data']['access_token'];
+
+      // User value = User.formJson(data['data']['user']);
+
+      String value = datax['status']['kode'];
+
+      if (value == 'success') {
+        // String value = data['status']['kode'];
+
+        User value = datax['status']['kode'];
+
+        return ApiReturnValue(value: value);
+      } else {
+        // String value = data['status']['keterangan'];
+        User value = datax['status']['keterangan'];
+
+        return ApiReturnValue(value: value);
+      }
     }
-
-    var data = jsonDecode(
-      response.body,
-    );
-
-    User.token = data['data']['access_token'];
-    User value = User.formJson(data['data']['user']);
-
-    return ApiReturnValue(value: value);
-    //return ApiReturnValue(message: "Wrong Email or Password");
   }
-
-  // static Future<ApiReturnValue<User>> signUp(User user, String password,
-  //     {File pictureFile, http.Client client}) async {
-  //   if (client == null) {
-  //     client = http.Client();
-  //   }
-  //   String url = baseUrl + 'register';
-
-  //   var response = await client.post(
-  //     url,
-  //     headers: {"Content-Type": "application/json"},
-  //     body: jsonEncode(
-  //       <String, String>{
-  //         'name': user.name,
-  //         'email': user.email,
-  //         'password': password,
-  //         'password_confirmation': password,
-  //         'address': user.address,
-  //         'city': user.city,
-  //         'houseNumber': user.houseNumber,
-  //         'phoneNumber': user.phoneNumber
-  //       },
-  //     ),
-  //   );
-
-  // if (response.statusCode != 200) {
-  //   return ApiReturnValue(
-  //     message: 'Please try again',
-  //   );
-  // }
-  // var data = jsonDecode(
-  //   response.body,
-  // );
-
-  // User.token = data['data']['access_token'];
-  // User value = User.formJson(
-  //   data['data']['user'],
-  // );
-
-  // //todo: Upload PP
-  // // ignore: unnecessary_null_comparison
-  // if (pictureFile != null) {
-  //   ApiReturnValue<String> result = await uploadProfilePicture(
-  //     pictureFile,
-  //   );
-  //   if (result.value != null) {
-  //     value = value.copyWith(
-  //       picturePath: baseUrl + result.value!,
-  //     );
-  //   }
-  // }
-
-  // static Future<ApiReturnValue<String>> uploadProfilePicture(File pictureFile,
-  //     {http.MultipartRequest request}) async {
-  //   String url = baseUrl + 'user/photo';
-  //   var uri = Uri.parse(url);
-
-  //   if (request == null) {
-  //     request = http.MultipartRequest('POST', uri)
-  //       ..headers['Content-Type'] = "application/json"
-  //       ..headers['Authorization'] = "Bearer ${User.token}";
-  //   }
-
-  //   var multipartFile = await http.MultipartFile.fromPath(
-  //     'file',
-  //     pictureFile.path,
-  //   );
-  //   request.files.add(
-  //     multipartFile,
-  //   );
-
-  //   var response = await request.send();
-
-  //   if (response.statusCode == 200) {
-  //     String responseBody = await response.stream.bytesToString();
-  //     var data = jsonDecode(
-  //       responseBody,
-  //     );
-
-  //     String imagePath = data['data'][0];
-  //     return ApiReturnValue(
-  //       value: imagePath,
-  //     );
-  //   } else {
-  //     return ApiReturnValue(
-  //       message: 'Uploading Profile Picture Failed',
-  //     );
-  //   }
-  // }
 }

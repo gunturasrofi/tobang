@@ -30,11 +30,13 @@ dependencies:
   cupertino_icons: ^1.0.3
   flutter_svg: ^0.22.0
   get: ^3.4.2
-  flutter_bloc: ^6.1.0
-  equatable: ^1.2.4
-  http: ^0.12.2
-  google_fonts: ^1.1.1
+  flutter_bloc: ^6.1.1
+  equatable: ^1.2.5
+  http: ^0.13.3 #^0.12.2 
+  google_fonts: ^2.1.0
   material_design_icons_flutter:  ^4.0.5555
+  
+  email_validator: ^2.0.1
 
 dev_dependencies:
   flutter_test:
